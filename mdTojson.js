@@ -3,11 +3,9 @@ var fs = require('fs');
 //生成对象json文件路径
 var targetPath = './datas.json'
 //md文件地址
-var rootPath = '../hexo/source/_posts/'
+var rootPath = '/Users/shudery/web/hexo/source/_posts/'
 //匹配正则
-var filesRex = /.*(\.md)/;
-
-
+var filesRex = /.*(\.md)/
 //拿到根目录所有文件，匹配出md文件路径
 var allFilesPath = getFilesPath(rootPath);
 var postFilesPath = allFilesPath.reduce((pre, path) => {
@@ -98,8 +96,10 @@ function parsePost(postStr) {
  */
 function getFilesPath(path) {
     var fileList = [];
-    (function searchPath(path) {
+    (function searchPath(path) {            
+        //读目录所有文件
         fs.readdirSync(path).forEach((item) => {
+            //获得文件信息，判断是否为文件夹
             if (fs.statSync(path + item).isDirectory()) {
                 searchPath(path + item + '/');
             } else {

@@ -1,0 +1,19 @@
+{
+  "name": "daguo",
+  "version": "1.0.0",
+  "description": "developing toolkit",
+  "main": "toolkit.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shudery/toolkit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shudery/toolkit/issues"
+  },
+  "homepage": "https://github.com/shudery/toolkit#readme"
+}
