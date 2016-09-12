@@ -4,11 +4,44 @@
  * 
  * node:
  * getPath
+ * queryStr
+ * 
  * dev:
  * tryBlock,
+ * extend
+ * 
+ * constructor:
+ * VerArray
  */
 
+/**
+ * 更新、扩展对象属性
+ * 依赖：clone深复制
+ * @param  {[type]}  base     需扩展对象
+ * @param  {[type]}  add      素材
+ * @param  {Boolean} isUpdate false扩展对象，不更新，true只更新对象，不扩展属性
+ * @return {[type]}           
+ */
+function extend(base, add, isUpdate) {
+    let obj = clone(base);
+    for (let i in add) {
+        if (i in obj) {
+            isUpdate && (obj[i] = add[i]);
+        } else {
+            !isUpdate && (obj[i] = add[i])
+        }
+    }
+    return obj;
+}
+// console.log(extend({a:1,b:2},{b:33,c:44},true))
 
+function queryStr(obj) {
+    let arr = [];
+    for (let i in obj) {
+        arr.push(i + '=' + obj[i]);
+    }
+    return '?' + arr.join('&');
+}
 
 /**
  * 遍历目录
@@ -20,7 +53,7 @@ function getPath(path) {
         console.log('expecting a string!');
         return;
     }
-    var fileList = [];
+    let fileList = [];
     (function searchPath(path) {
         //读目录所有文件
         fs.readdirSync(path).forEach((item) => {
@@ -79,44 +112,44 @@ class VerArray extends Array {
  * @param  [object]
  * @return [object]  
  */
-function deepCopy(obj) {
+function clone(obj) {
     //function类型属于object虽然也是引用类型，但是通常深拷贝也是直接赋值
     if (typeof obj !== 'object' || obj === null) {
         return obj;
     }
     //创建的新对象和原对象种类一致
-    var ctr = Array.isArray(obj) ? [] : new obj.constructor;
+    let ctr = Array.isArray(obj) ? [] : new obj.constructor;
     //保存对象的构造函数信息
-    for (var i in obj) {
-        if(obj.hasOwnPrototype(i)){
-            ctr[i] = typeof obj !== 'object' ? obj[i] : deepCopy(obj[i]);
+    for (let i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            ctr[i] = typeof obj !== 'object' ? obj[i] : clone(obj[i]);
         };
     }
     return ctr;
 }
 
 //Predicate Function
-if (!isString) {
-    function isString(target) {
-        return typeof target !== 'string' ? false : true;
-    }
-}
-if (!isArray) {
-    function isArray(target) {
-        return Object.prototype.toString.call(target) === '[object Array]';
-    };
-}
-if(!isObject){
-    function isObject(target){
-        return typeof target === 'object' && !isArray(target) && target !== null;
-    }
-}
+typeof isString === 'function' && (isString = function(target) {
+    return typeof target === 'string' ? true : false;
+})
+
+typeof isArray === 'function' && (isArray = function(target) {
+    return Object.prototype.toString.call(target) === '[object Array]';
+})
+
+typeof isObject === 'function' && (isObject = function(target) {
+    return typeof target === 'object' && !isArray(target) && target !== null;
+})
+
 
 
 
 const toolkit = {
+    extend,
     getPath,
-    VerArray,
     tryBlock,
+    queryStr,
+    VerArray,
 }
-export default toolkit;
+
+module.export = toolkit;
