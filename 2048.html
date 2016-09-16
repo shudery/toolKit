@@ -10,8 +10,13 @@
         margin: 30px auto;
         text-align: center;
     }
+    button{
+        width:30%;
+        background-color: #FA795F;
+        border-radius: 5px;
+        border-style: none;
+    }
     #box {
-        border: 1px solid black;
         width: 100%;
         max-width: 400px;
         margin: 0 auto;
@@ -19,7 +24,8 @@
     #canvas {
         width: 98%;
         margin: 1% auto;
-        border: 1px solid black;
+        border: 3px solid #FA795F;
+        border-radius: 5px;
         height: 400px;
     }
     .cell {
@@ -28,7 +34,7 @@
         height: 23%;
         float: left;
         position: relative;
-        background-color: grey;
+        background-color: #EED0C8;
     }
     p {
         position: absolute;
@@ -48,7 +54,7 @@
     </div>
     <script>
 
-    //问题：没有gameover判断，没动画
+    //问题：没有gameover判断，没动画   
     var arr = [];
     var color = {
         2: "#FFC3A0",
@@ -120,7 +126,7 @@
                 if (val) {
                     cell.style.backgroundColor = color[val];
                 } else {
-                    cell.style.backgroundColor = "grey";
+                    cell.style.backgroundColor = "#EED0C8";
                 }
             }
         }
