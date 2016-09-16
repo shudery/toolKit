@@ -26,13 +26,13 @@ String.prototype.showAsmd = function() {
 
     var str = this.toString();
     if (typeof str !== 'string') {
-        console.log('expecting a string param!')
-        return;
+        return new TypeError('expecting a string param!');
     }
     var hash = this.hash;
     for (var key in hash) {
         var repText = '';
         var keyRexExp = hash[key];
+
         if (Object.prototype.toString.call(keyRexExp) === '[object RegExp]') {
             switch (key) {
                 case 'a':
@@ -47,6 +47,7 @@ String.prototype.showAsmd = function() {
             }
             str = str.replace(keyRexExp, repText)
         } else {
+            //有多个匹配规则
             keyRexExp.forEach((val, index) => {
                 str = str.replace(val, '<' + key + ' class="' + key + '-md">$1</' + key + '>')
             })

@@ -5,14 +5,34 @@
  * node:
  * getPath
  * queryStr
+ * queryPrase
  * 
  * dev:
  * tryBlock,
- * extend
+ * extend,
+ * log
  * 
  * constructor:
  * VerArray
  */
+
+
+//Predicate Function
+typeof isString === 'undefined' && (isString = function(target) {
+    return typeof target === 'string' ? true : false;
+})
+
+typeof isArray === 'undefined' && (isArray = function(target) {
+    return Object.prototype.toString.call(target) === '[object Array]';
+})
+
+typeof isObject === 'undefined' && (isObject = function(target) {
+    return typeof target === 'object' && !isArray(target) && target !== null;
+})
+
+typeof stringify === 'undefined' && (stringify = JSON.stringify)
+typeof parse === 'undefined' && (stringify = JSON.parse)
+
 
 /**
  * 更新、扩展对象属性
@@ -22,7 +42,8 @@
  * @param  {Boolean} isUpdate false扩展对象，不更新，true只更新对象，不扩展属性
  * @return {[type]}           
  */
-function extend(base, add, isUpdate) {
+function extend(base, add, isUp) {
+    let isUpdate = isUp || false;
     let obj = clone(base);
     for (let i in add) {
         if (i in obj) {
@@ -35,6 +56,11 @@ function extend(base, add, isUpdate) {
 }
 // console.log(extend({a:1,b:2},{b:33,c:44},true))
 
+/**
+ * 拼接，解析查询字符串
+ * @param  {[type]} obj [description]
+ * @return {[type]}     [description]
+ */
 function queryStr(obj) {
     let arr = [];
     for (let i in obj) {
@@ -43,6 +69,13 @@ function queryStr(obj) {
     return '?' + arr.join('&');
 }
 
+function queryPrase(str) {
+    let objArr = str.split('?')[1].split('&');
+    return objArr.reduce((pre, cur) => {
+        pre[cur.split('=')[0]] = cur.split('=')[1];
+        return pre;
+    }, {})
+}
 /**
  * 遍历目录
  * @param  [string] 遍历根节点
@@ -50,8 +83,7 @@ function queryStr(obj) {
  */
 function getPath(path) {
     if (!isString(path)) {
-        console.log('expecting a string!');
-        return;
+        return new TypeError('expecting a string!');
     }
     let fileList = [];
     (function searchPath(path) {
@@ -67,23 +99,29 @@ function getPath(path) {
     })(path)
     return fileList;
 }
-
-/**
- * 用try包裹执行，让程序不中断
- * @param [string] 需要包裹的代码字符串
- * @return [string] catch到的错误，
- */
-function tryBlock(string) {
-    if (!isString(string)) {
-        console.log('expecting a string!');
-        return;
-    }
+    /**
+     * 用try包裹执行，让程序不中断
+     * @param [string] 需要包裹的代码字符串
+     * @return [string] catch到的错误，
+     */
+function tryBlock(str, msg) {
+    !isString(str) && console.log('expecting a string!');
     try {
-        eval(string);
+        eval(str);
     } catch (e) {
-        console.log('throw error form tryBlock:' + e)
+        console.log(`throw error form tryBlock:${e}\nmsg:${msg?msg:'nothing'}`)
         return e;
     }
+}
+/**
+ * 调试打印，带标识，依赖非严格模式
+ */
+function log(str, flag) {
+    this.count = this.count || 0;
+    return (function() {
+        this.count++;
+        console.log(`<LOGPOINT ${flag?flag:this.count}> ${str}`)
+    })();
 }
 /**
  * 带有记忆性的数组扩展
@@ -128,19 +166,6 @@ function clone(obj) {
     return ctr;
 }
 
-//Predicate Function
-typeof isString === 'function' && (isString = function(target) {
-    return typeof target === 'string' ? true : false;
-})
-
-typeof isArray === 'function' && (isArray = function(target) {
-    return Object.prototype.toString.call(target) === '[object Array]';
-})
-
-typeof isObject === 'function' && (isObject = function(target) {
-    return typeof target === 'object' && !isArray(target) && target !== null;
-})
-
 
 
 
@@ -148,7 +173,9 @@ const toolkit = {
     extend,
     getPath,
     tryBlock,
+    log,
     queryStr,
+    queryPrase,
     VerArray,
 }
 
