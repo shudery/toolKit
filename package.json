@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/shudery/toolkit/issues"
   },
+  "devDependencies": {
+    "mocha-phantomjs": "^4.1.0",
+    "mocha": "*"
+  },
   "homepage": "https://github.com/shudery/toolkit#readme"
 }
