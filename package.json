@@ -17,7 +17,8 @@
   },
   "devDependencies": {
     "mocha-phantomjs": "^4.1.0",
-    "mocha": "*"
+    "mocha": "*",
+    "chai":"*"
   },
   "homepage": "https://github.com/shudery/toolkit#readme"
 }
