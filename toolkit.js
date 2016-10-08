@@ -68,7 +68,7 @@ function queryStr(obj) {
     }
     return '?' + arr.join('&');
 }
-
+//没有处理单个Key对应多个value
 function queryPrase(str) {
     let objArr = str.split('?')[1].split('&');
     return objArr.reduce((pre, cur) => {

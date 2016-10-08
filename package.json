@@ -1,16 +1,16 @@
 {
   "name": "daguo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "developing toolkit",
   "main": "toolkit.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha test/test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shudery/toolkit.git"
   },
-  "author": "",
+  "author": "daguo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/shudery/toolkit/issues"
