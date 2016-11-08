@@ -117,9 +117,10 @@ function tryBlock(str, msg) {
  * 调试打印，带标识，依赖非严格模式
  */
 function log(str, flag) {
+    let that = this;
     this.count = this.count || 0;
     return (function() {
-        this.count++;
+        that.count++;
         console.log(`<LOGPOINT ${flag?flag:this.count}> ${str}`)
     })();
 }
@@ -174,9 +175,10 @@ const toolkit = {
     getPath,
     tryBlock,
     log,
+    clone,
     queryStr,
     queryPrase,
     VerArray,
 }
 
-module.export = toolkit;
+module.exports = toolkit;
