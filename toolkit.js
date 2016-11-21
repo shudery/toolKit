@@ -167,10 +167,21 @@ function clone(obj) {
     return ctr;
 }
 
-
+/**
+ * inject all module by pass module's name as arguments
+ * @return none
+ */
+function injection() {
+    var str = '';
+    Array.from(arguments).forEach(val => {
+        str += '' + val + '' + '=require("' + val + '");'
+        eval(str);
+    })
+}
 
 
 const toolkit = {
+    injection,
     extend,
     getPath,
     tryBlock,

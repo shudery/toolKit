@@ -1,6 +1,6 @@
 {
   "name": "daguo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "developing toolkit",
   "main": "toolkit.js",
   "scripts": {
@@ -16,9 +16,10 @@
     "url": "https://github.com/shudery/toolkit/issues"
   },
   "devDependencies": {
-    "mocha-phantomjs": "^4.1.0",
+    "chai": "*",
+    "colors": "^1.1.2",
     "mocha": "*",
-    "chai":"*"
+    "mocha-phantomjs": "^4.1.0"
   },
   "homepage": "https://github.com/shudery/toolkit#readme"
 }
