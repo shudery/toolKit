@@ -4,7 +4,7 @@
   "description": "developing toolkit",
   "main": "toolkit.js",
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-z/**
+/**
  * showAsmd 简单的markdown语法转换成html标签工具，标签类型为[相应的标签名-md]
  */
 

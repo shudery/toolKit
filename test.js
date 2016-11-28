@@ -5,10 +5,10 @@
 function injection() {
     var str = '';
     Array.from(arguments).forEach(val => {
-        str += '' + val + '' + '=require("' + val + '");'
+        str += 'global.' + val + '=require("' + val + '");'
         eval(str);
     })
 }
 
 injection('http', 'colors');
-console.log('colors'.green);
+console.log(colors);

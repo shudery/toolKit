@@ -1,4 +1,6 @@
-/**2016/9/9 @daguo
+/**2016/9/9 
+ * author @daguo
+ * shudery@foxmail.com
  * toolkit
  * tools for developing quickly
  * 
@@ -16,6 +18,8 @@
  * VerArray
  */
 
+// root 的值, 客户端为 `window`, 服务端(node) 中为 `exports`
+var root = this;
 
 //Predicate Function
 typeof isString === 'undefined' && (isString = function(target) {
@@ -31,7 +35,7 @@ typeof isObject === 'undefined' && (isObject = function(target) {
 })
 
 typeof stringify === 'undefined' && (stringify = JSON.stringify)
-typeof parse === 'undefined' && (stringify = JSON.parse)
+typeof parse === 'undefined' && (parse = JSON.parse)
 
 
 /**
@@ -42,9 +46,10 @@ typeof parse === 'undefined' && (stringify = JSON.parse)
  * @param  {Boolean} isUpdate false扩展对象，不更新，true只更新对象，不扩展属性
  * @return {[type]}           
  */
-function extend(base, add, isUp) {
+function extend(base, add, isUp, isPoint) {
     let isUpdate = isUp || false;
-    let obj = clone(base);
+    let isDeep = isPoint || false;
+    let obj = isDeep ? clone(base) : base;
     for (let i in add) {
         if (i in obj) {
             isUpdate && (obj[i] = add[i]);
@@ -99,11 +104,11 @@ function getPath(path) {
     })(path)
     return fileList;
 }
-    /**
-     * 用try包裹执行，让程序不中断
-     * @param [string] 需要包裹的代码字符串
-     * @return [string] catch到的错误，
-     */
+/**
+ * 用try包裹执行，让程序不中断
+ * @param [string] 需要包裹的代码字符串
+ * @return [string] catch到的错误，
+ */
 function tryBlock(str, msg) {
     !isString(str) && console.log('expecting a string!');
     try {
@@ -116,35 +121,15 @@ function tryBlock(str, msg) {
 /**
  * 调试打印，带标识，依赖非严格模式
  */
-function log(str, flag) {
-    let that = this;
-    this.count = this.count || 0;
-    return (function() {
-        that.count++;
-        console.log(`<LOGPOINT ${flag?flag:this.count}> ${str}`)
-    })();
+function log(string, flag) {
+    root.count = root.count || 0;
+    root.count++;
+    let time = (new Date()).toString().match(/20\d\d\s(.*?)\s/)[1];
+    let str = `<${time}><LOG ${root.count}${flag?' '+flag:''}>${string}`;
+    console.log(str)
+    return str;
 }
-/**
- * 带有记忆性的数组扩展
- * new的VerArray类型具有两个方法
- * revert可以将数组恢复到上一次调用save时的状态
- */
-class VerArray extends Array {
-    constructor() {
-            super();
-            this.history = [
-                []
-            ];
-        }
-        //存储当前数组的状态
-    save() {
-            this.history.push(this.slice());
-        }
-        //回到上一个数组版本
-    revert() {
-        this.splice(0, this.length, ...this.history[this.history.length - 1]);
-    }
-}
+
 
 /**
  * 数据类型深复制，函数只复制引用
@@ -169,17 +154,24 @@ function clone(obj) {
 
 /**
  * inject all module by pass module's name as arguments
- * @return none
+ * @return {[type]} [description]
  */
 function injection() {
     var str = '';
     Array.from(arguments).forEach(val => {
-        str += '' + val + '' + '=require("' + val + '");'
+        if (/\//.test(val)) {
+            log('expecting a module or but no carry path!', 'injection error');
+            return;
+        };
+        //自定义模块名
+        if (isArray(val)) {
+            str += 'global.' + val[1] + '=require("' + val[0] + '");'
+            return;
+        };
+        str += 'global.' + val + '=require("' + val + '");'
         eval(str);
     })
 }
-
-
 const toolkit = {
     injection,
     extend,
@@ -189,7 +181,6 @@ const toolkit = {
     clone,
     queryStr,
     queryPrase,
-    VerArray,
 }
 
 module.exports = toolkit;
