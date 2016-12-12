@@ -19,7 +19,8 @@
     "chai": "*",
     "colors": "^1.1.2",
     "mocha": "*",
-    "mocha-phantomjs": "^4.1.0"
+    "mocha-phantomjs": "^4.1.0",
+    "superagent": "^3.1.0"
   },
   "homepage": "https://github.com/shudery/toolkit#readme"
 }
